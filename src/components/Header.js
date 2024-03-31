@@ -1,22 +1,47 @@
-import React from 'react'
+import React, { useState } from "react";
 
-const Header = () => {
+const Header = ({ onSearch }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSearch = () => {
+    onSearch(searchTerm);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <header className="sticky top-0 h-16 bg-gray-500 bg-opacity-40 backdrop-blur-sm">
-      <div className="h-full max-w-7xl mx-auto flex justify-between items-center px-10">
+      <div className="h-full max-w-7xl mx-auto flex justify-between items-center">
         <div>
           <strong className="text-xl">Weather App</strong>
         </div>
-        <div className="">
+        <div className="flex items-center">
           <input
             type="text"
             placeholder="Enter City"
-            className="px-3 py-2 text-gray-700 rounded-sm outline-none border-none"
+            className="px-3 py-2 text-gray-700 rounded-lg outline-none border-none"
+            value={searchTerm}
+            onChange={handleSearchInputChange}
+            onKeyPress={handleKeyPress}
           />
+          <button
+            className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg focus:outline-none"
+            onClick={handleSearch}
+          >
+            Search
+          </button>
         </div>
       </div>
     </header>
   );
-}
+};
 
-export default Header
+export default Header;

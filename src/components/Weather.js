@@ -6,8 +6,8 @@ import Header from "./Header";
 const Weather = () => {
   const [currentData, setCurrentData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
-  const [currentDate, setCurrentDate] = useState();
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,8 +22,6 @@ const Weather = () => {
 
         setCurrentData(currentWeatherData);
         
-        setCurrentDate(new Date());
-
         const currentDate = new Date();
         const firstDayOfWeek = new Date(
           currentDate.getFullYear(),
@@ -31,14 +29,12 @@ const Weather = () => {
           currentDate.getDate() - currentDate.getDay()
         );
 
-        // Get the end date of the current week
         const lastDayOfWeek = new Date(
           firstDayOfWeek.getFullYear(),
           firstDayOfWeek.getMonth(),
           firstDayOfWeek.getDate() + 6
         );
 
-        // Fetch forecast data for the current week
         const forecastResponse = await fetch(
           `${process.env.REACT_APP_API_URL}/forecast/?lat=${newLat}&lon=${newLong}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
         );
@@ -67,15 +63,31 @@ const Weather = () => {
     fetchData();
   }, []);
 
-  const [search, setSearch] = useState("");
+
+ const handleSearch = async (searchTerm) => {
+   setLoading(true);
+   try {
+     const response = await fetch(
+       `${process.env.REACT_APP_API_URL}/weather?q=${searchTerm}&units=metric&appid=${process.env.REACT_APP_API_KEY}`
+     );
+     const data = await response.json();
+     setCurrentData(data);
+     setLoading(false);
+   } catch (error) {
+     console.error("Error fetching weather data by city name:", error);
+     setLoading(false);
+   }
+ };
+
+
 
   return (
     <div className="h-full text-white">
-      <Header setSearch={setSearch} search={search} />
+      <Header onSearch={handleSearch} />
       <div className="h-full text-center bg-gray-900 bg-opacity-40 overflow-auto py-16">
         <div className="max-w-7xl mx-auto flex gap-10">
           <WeatherDetail data={currentData} loading={loading} />
-          <WeeklyForeCast data={forecastData}  loading={loading}/>
+          <WeeklyForeCast data={forecastData} loading={loading} />
         </div>
       </div>
     </div>
