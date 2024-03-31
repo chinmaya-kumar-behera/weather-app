@@ -47,10 +47,21 @@ npm install
 ``` bash
 npm start
 ```
-
 Open your browser and visit http://localhost:3000 to view the app.
 ## Usage:
 - Upon launching the app, the current weather and weekly forecast for your current location will be displayed.
 - Use the search input field to search for weather details by city name.
 - Press Enter or click the Search button to initiate the search.
 - The app will display the current weather and weekly forecast for the entered city.
+
+# Deployment
+- This portfolio site is deployed using Vercel. Vercel provides a seamless deployment experience for static sites and offers features like continuous deployment and custom domain support.
+
+### To deploy your own version of this site using Vercel, follow these steps:
+
+- Sign up for a Vercel account if you haven't already.
+- Install the Vercel CLI by running npm install -g vercel.
+- Navigate to the root directory of your project in the terminal.
+- Run the command vercel login and follow the prompts to log in to your Vercel account.
+- Run the command vercel --prod to deploy your site to production.
+- Your site will be deployed to a unique URL provided by Vercel, such as https://your-project-name.vercel.app.
