@@ -1,6 +1,12 @@
 # Weather App
 This Weather App allows users to check the current weather and weekly forecast for a specific city. Users can search for weather details by entering the city name or allowing the app to use their current location.
 
+# ![Visit App](https://weather.chinmaya.vercel.app/)
+
+
+# App Image
+![image](https://github.com/chinmaya-kumar-behera/weather-app/assets/101429530/ef25ed2e-5a60-479f-b12d-7a40af13e915)
+
 # Features:
 Display current weather details including temperature, weather condition, wind speed, humidity, and more.
 Show a weekly forecast with temperature and weather condition for the upcoming days.
