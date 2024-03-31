@@ -7,7 +7,6 @@ const Weather = () => {
   const [currentData, setCurrentData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +20,7 @@ const Weather = () => {
         const currentWeatherData = await currentWeatherResponse.json();
 
         setCurrentData(currentWeatherData);
-        
+
         const currentDate = new Date();
         const firstDayOfWeek = new Date(
           currentDate.getFullYear(),
@@ -63,29 +62,27 @@ const Weather = () => {
     fetchData();
   }, []);
 
-
- const handleSearch = async (searchTerm) => {
-   setLoading(true);
-   try {
-     const response = await fetch(
-       `${process.env.REACT_APP_API_URL}/weather?q=${searchTerm}&units=metric&appid=${process.env.REACT_APP_API_KEY}`
-     );
-     const data = await response.json();
-     setCurrentData(data);
-     setLoading(false);
-   } catch (error) {
-     console.error("Error fetching weather data by city name:", error);
-     setLoading(false);
-   }
- };
-
-
+  const handleSearch = async (searchTerm) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/weather?q=${searchTerm}&units=metric&appid=${process.env.REACT_APP_API_KEY}`
+      );
+      const data = await response.json();
+      setCurrentData(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching weather data by city name:", error);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="h-full text-white">
       <Header onSearch={handleSearch} />
-      <div className="h-full text-center bg-gray-900 bg-opacity-40 overflow-auto py-16">
-        <div className="max-w-7xl mx-auto flex gap-10">
+      <div className="h-full text-center bg-gray-900 bg-opacity-40 py-16 overflow-auto">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 px-3 lg:px-0">
           <WeatherDetail data={currentData} loading={loading} />
           <WeeklyForeCast data={forecastData} loading={loading} />
         </div>

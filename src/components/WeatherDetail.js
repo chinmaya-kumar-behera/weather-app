@@ -5,13 +5,16 @@ const WeatherDetail = ({ data, loading }) => {
   const currentDate = new Date();
 
   return (
-    <div className="w-4/5 flex justify-center items-center backdrop-blur-md shadow-md rounded-xl p-5">
+    <div className="w-full lg:w-4/5 min-h-[400px] flex justify-center items-center backdrop-blur-md shadow-md rounded-xl p-5 z-10">
       {loading ? (
-        <Loader />
+        <div className="flex flex-col items-center gap-2  ">
+          <Loader />
+          <h2>Fetching you details. Please wait...</h2>
+        </div>
       ) : (
-        <div className="w-full h-full">
+        <div className="w-full h-full ">
           <div className="w-full h-full">
-            <div className="flex justify-between text-start">
+            <div className="flex flex-col lg:flex-row gap-2 justify-between text-start">
               <div className="space-y-3">
                 <h2 className="text-5xl font-semibold text-left">
                   {data.name}

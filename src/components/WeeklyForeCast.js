@@ -7,7 +7,7 @@ const WeeklyForeCast = ({ loading, data }) => {
     return `${process.env.REACT_APP_ICON_BASE_URL}/wn/${iconCode}@4x.png`;
   };
   return (
-    <div className="w-1/5 shadow-md p-5 backdrop-blur-lg text-center rounded-xl">
+    <div className="w-full lg:w-1/5 shadow-md p-5 backdrop-blur-lg text-center rounded-xl">
       <h3 className="text-xl font-semibold">Weekly Forecast</h3>
       <div className="flex flex-col gap-2 mt-5 text-gray-100 items-center justify-center">
         {loading ? (

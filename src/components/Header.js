@@ -18,8 +18,8 @@ const Header = ({ onSearch }) => {
   };
 
   return (
-    <header className="sticky top-0 h-16 bg-gray-500 bg-opacity-40 backdrop-blur-sm">
-      <div className="h-full max-w-7xl mx-auto flex justify-between items-center">
+    <header className="sticky top-0 h-24 lg:h-16 bg-gray-500 bg-opacity-40 backdrop-blur-sm py-2">
+      <div className="h-full max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center px-3 lg:px-0 z-20 ">
         <div>
           <strong className="text-xl">Weather App</strong>
         </div>
