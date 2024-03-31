@@ -14,6 +14,7 @@ Responsive design for a seamless experience on various devices.
 
 # Features made the weather app unique than other
 Showing "Internet is not connected" alert, if you are not connected with internet.
+
 Loading the data automatically on conneting to the internet.
 
 # Technologies Used:
