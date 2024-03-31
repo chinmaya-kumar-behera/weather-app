@@ -2,7 +2,6 @@ import React  from "react";
 import Loader from "./Loader";
 
 const WeeklyForeCast = ({ loading, data }) => {
-  console.log(data)
 
   const getWeatherIconUrl = (iconCode) => {
     return `${process.env.REACT_APP_ICON_BASE_URL}/wn/${iconCode}@4x.png`;
