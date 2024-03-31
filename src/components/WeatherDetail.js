@@ -11,7 +11,7 @@ const WeatherDetail = ({ data, loading }) => {
           <Loader />
           <h2>Fetching you details. Please wait...</h2>
         </div>
-      ) : (
+      ) : ( data && 
         <div className="w-full h-full ">
           <div className="w-full h-full">
             <div className="flex flex-col lg:flex-row gap-2 justify-between text-start">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import WeatherDetail from "./WeatherDetail";
 import WeeklyForeCast from "./WeeklyForeCast";
 import Header from "./Header";
@@ -10,6 +11,12 @@ const Weather = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!navigator.onLine) {
+        toast.error("No internet connection. Please check your network.");
+        setLoading(false);
+        return;
+      }
+
       navigator.geolocation.getCurrentPosition(async function (position) {
         const newLat = position.coords.latitude;
         const newLong = position.coords.longitude;
@@ -66,11 +73,21 @@ const Weather = () => {
     if (loading) return;
     setLoading(true);
     try {
+      if (!navigator.onLine) {
+        toast.error("No internet connection. Please check your network.");
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/weather?q=${searchTerm}&units=metric&appid=${process.env.REACT_APP_API_KEY}`
       );
       const data = await response.json();
-      setCurrentData(data);
+      if (data.cod && data.cod === "404") {
+        toast.error("City not found. Please enter a valid city name.");
+      } else {
+        setCurrentData(data);
+      }
       setLoading(false);
     } catch (error) {
       console.error("Error fetching weather data by city name:", error);

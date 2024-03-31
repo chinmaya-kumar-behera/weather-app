@@ -2,6 +2,7 @@ import React  from "react";
 import Loader from "./Loader";
 
 const WeeklyForeCast = ({ loading, data }) => {
+  console.log(data)
 
   const getWeatherIconUrl = (iconCode) => {
     return `${process.env.REACT_APP_ICON_BASE_URL}/wn/${iconCode}@4x.png`;
@@ -12,7 +13,7 @@ const WeeklyForeCast = ({ loading, data }) => {
       <div className="flex flex-col gap-2 mt-5 text-gray-100 items-center justify-center">
         {loading ? (
           <Loader />
-        ) : (
+        ) : ( data &&
           data.map((forecast, index) => (
             <div key={index} className="w-full p-2 border-b">
               <div className="w-full flex justify-start">
