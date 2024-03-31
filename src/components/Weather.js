@@ -9,68 +9,70 @@ const Weather = () => {
   const [forecastData, setForecastData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!navigator.onLine) {
-        toast.error("No internet connection. Please check your network.");
-        setLoading(false);
-        return;
-      }
+  const fetchData = async () => {
+    if (!navigator.onLine) {
+      toast.error("No internet connection. Please check your network.");
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
 
-      navigator.geolocation.getCurrentPosition(async function (position) {
-        const newLat = position.coords.latitude;
-        const newLong = position.coords.longitude;
+    navigator.geolocation.getCurrentPosition(async function (position) {
+      const newLat = position.coords.latitude;
+      const newLong = position.coords.longitude;
 
-        const currentWeatherResponse = await fetch(
-          `${process.env.REACT_APP_API_URL}/weather/?lat=${newLat}&lon=${newLong}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
-        );
-        const currentWeatherData = await currentWeatherResponse.json();
+      const currentWeatherResponse = await fetch(
+        `${process.env.REACT_APP_API_URL}/weather/?lat=${newLat}&lon=${newLong}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
+      );
+      const currentWeatherData = await currentWeatherResponse.json();
 
-        setCurrentData(currentWeatherData);
+      setCurrentData(currentWeatherData);
 
-        const currentDate = new Date();
-        const firstDayOfWeek = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth(),
-          currentDate.getDate() - currentDate.getDay()
-        );
+      const currentDate = new Date();
+      const firstDayOfWeek = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate() - currentDate.getDay()
+      );
 
-        const lastDayOfWeek = new Date(
-          firstDayOfWeek.getFullYear(),
-          firstDayOfWeek.getMonth(),
-          firstDayOfWeek.getDate() + 6
-        );
+      const lastDayOfWeek = new Date(
+        firstDayOfWeek.getFullYear(),
+        firstDayOfWeek.getMonth(),
+        firstDayOfWeek.getDate() + 6
+      );
 
-        const forecastResponse = await fetch(
-          `${process.env.REACT_APP_API_URL}/forecast/?lat=${newLat}&lon=${newLong}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
-        );
-        const forecastWeatherData = await forecastResponse.json();
+      const forecastResponse = await fetch(
+        `${process.env.REACT_APP_API_URL}/forecast/?lat=${newLat}&lon=${newLong}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
+      );
+      const forecastWeatherData = await forecastResponse.json();
 
-        const uniqueDates = new Set();
-        const currentWeekData = forecastWeatherData.list.filter((forecast) => {
-          const forecastDate = new Date(forecast.dt * 1000);
-          const dateString = forecastDate.toDateString();
+      const uniqueDates = new Set();
+      const currentWeekData = forecastWeatherData.list.filter((forecast) => {
+        const forecastDate = new Date(forecast.dt * 1000);
+        const dateString = forecastDate.toDateString();
 
-          if (!uniqueDates.has(dateString)) {
-            uniqueDates.add(dateString);
-            return (
-              forecastDate >= firstDayOfWeek && forecastDate <= lastDayOfWeek
-            );
-          }
+        if (!uniqueDates.has(dateString)) {
+          uniqueDates.add(dateString);
+          return (
+            forecastDate >= firstDayOfWeek && forecastDate <= lastDayOfWeek
+          );
+        }
 
-          return false;
-        });
-
-        setForecastData(currentWeekData);
-        setLoading(false);
+        return false;
       });
-    };
 
+      setForecastData(currentWeekData);
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
   const handleSearch = async (searchTerm) => {
     if (loading) return;
+    if (!searchTerm.trim()) return;
     setLoading(true);
     try {
       if (!navigator.onLine) {
@@ -94,6 +96,17 @@ const Weather = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleOnline = () => {
+      fetchData();
+       toast.success("Nice, You are connected.");
+    };
+    window.addEventListener("online", handleOnline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+    };
+  });
 
   return (
     <div className="h-full text-white">
