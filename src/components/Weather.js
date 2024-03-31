@@ -8,6 +8,7 @@ const Weather = () => {
   const [currentData, setCurrentData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState();
 
   const fetchData = async () => {
     if (!navigator.onLine) {
@@ -99,8 +100,10 @@ const Weather = () => {
 
   useEffect(() => {
     const handleOnline = () => {
-      fetchData();
-       toast.success("Nice, You are connected.");
+      if (search) {
+        handleSearch(search);
+      } else fetchData();
+      toast.success("Nice, You are connected.");
     };
     window.addEventListener("online", handleOnline);
     return () => {
@@ -110,7 +113,7 @@ const Weather = () => {
 
   return (
     <div className="h-full text-white">
-      <Header onSearch={handleSearch} />
+      <Header onSearch={handleSearch} setSearchTerm={setSearch} searchTerm={search} />
       <div className="h-full text-center bg-gray-900 bg-opacity-40 py-16 overflow-auto">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 px-3 lg:px-0">
           <WeatherDetail data={currentData} loading={loading} />

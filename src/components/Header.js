@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-const Header = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const Header = ({ onSearch, setSearchTerm, searchTerm }) => {
+  // const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchInputChange = (event) => {
     setSearchTerm(event.target.value);
